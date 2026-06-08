@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Prince Nshuti — Network &amp; Cybersecurity Engineer</title>
+<meta name="description" content="Prince Nshuti — Network &amp; Cybersecurity infrastructure engineer and Technical Account Manager based in Kigali, Rwanda. 7+ years securing and scaling enterprise networks." />
+<meta name="author" content="Prince Nshuti" />
+<meta property="og:title" content="Prince Nshuti — Network &amp; Cybersecurity Engineer" />
+<meta property="og:description" content="Designing, securing and scaling enterprise networks across Rwanda and the META region." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://princenshuti.com" />
+<link rel="canonical" href="https://princenshuti.com" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;450;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     Design tokens
+     Monochrome + electric-blue accent. Sharp, technical, calm.
+     ============================================================ */
+  :root {
+    --bg:            #08090C;
+    --bg-elev:       #0E1016;
+    --bg-card:       #111319;
+    --border:        #1E212B;
+    --border-strong: #2A2E3A;
+    --text:          #ECEDF1;
+    --text-muted:    #9A9FAD;
+    --text-faint:    #686D7B;
+    --accent:        #3B82F6;
+    --accent-soft:   #1D4ED8;
+    --accent-glow:   rgba(59, 130, 246, 0.14);
+    --good:          #34D399;
+
+    /* Surface helpers (themed) */
+    --nav-bg:    rgba(14, 16, 22, 0.72);
+    --grid-line: rgba(255, 255, 255, 0.018);
+    --hover-bg:  rgba(255, 255, 255, 0.05);
+    --shadow:    0 1px 0 rgba(255,255,255,0.02);
+
+    --maxw: 1080px;
+    --radius: 14px;
+
+    /* Emil-style strong easing curves (CSS built-ins are too weak) */
+    --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
+    --font-head: "Space Grotesk", system-ui, sans-serif;
+    --font-body: "Inter", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  /* Light theme — slate-based, accessible contrast (per UI/UX Pro Max) */
+  :root[data-theme="light"] {
+    --bg:            #F7F8FA;
+    --bg-elev:       #FFFFFF;
+    --bg-card:       #FFFFFF;
+    --border:        #E4E7EC;
+    --border-strong: #CFD4DD;
+    --text:          #0F172A;
+    --text-muted:    #475569;
+    --text-faint:    #64748B;
+    --accent:        #2563EB;
+    --accent-soft:   #1D4ED8;
+    --accent-glow:   rgba(37, 99, 235, 0.10);
+    --good:          #059669;
+
+    --nav-bg:    rgba(255, 255, 255, 0.78);
+    --grid-line: rgba(15, 23, 42, 0.035);
+    --hover-bg:  rgba(15, 23, 42, 0.05);
+    --shadow:    0 1px 2px rgba(15, 23, 42, 0.04);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+    transition: background 320ms var(--ease-out), color 320ms var(--ease-out);
+  }
+
+  /* Ambient background grid + glow */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 30%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 30%, transparent 80%);
+    pointer-events: none;
+  }
+
+  ::selection { background: var(--accent); color: #fff; }
+
+  a { color: inherit; text-decoration: none; }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  /* ============================================================
+     Navigation
+     ============================================================ */
+  header.nav {
+    position: fixed;
+    top: 16px;
+    left: 0; right: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .nav-inner {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    width: calc(100% - 32px);
+    max-width: var(--maxw);
+    padding: 10px 12px 10px 20px;
+    background: var(--nav-bg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    transition: border-color 200ms var(--ease-out), background 200ms var(--ease-out);
+  }
+  .nav-inner:hover { border-color: var(--border-strong); }
+  .brand {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .brand .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--good);
+    box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.12);
+  }
+  .nav-links { display: flex; align-items: center; gap: 4px; }
+  .nav-links a {
+    font-size: 14px;
+    color: var(--text-muted);
+    padding: 8px 14px;
+    border-radius: 999px;
+    transition: color 160ms var(--ease-out), background 160ms var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .nav-links a:hover { color: var(--text); background: var(--hover-bg); }
+  }
+  .nav-cta {
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff !important;
+    background: var(--accent);
+    padding: 9px 16px !important;
+    border-radius: 999px !important;
+    transition: transform 160ms var(--ease-out), background 160ms var(--ease-out) !important;
+  }
+  .nav-cta:hover { background: #4f8ff7; }
+  .nav-cta:active { transform: scale(0.97); }
+  @media (max-width: 720px) { .nav-links a:not(.nav-cta) { display: none; } }
+
+  /* Theme toggle */
+  .theme-toggle {
+    flex-shrink: 0;
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-elev);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 160ms var(--ease-out), border-color 160ms var(--ease-out),
+                background 160ms var(--ease-out), transform 160ms var(--ease-out);
+  }
+  .theme-toggle:hover { color: var(--text); border-color: var(--border-strong); }
+  .theme-toggle:active { transform: scale(0.92); }
+  .theme-toggle svg {
+    width: 18px; height: 18px;
+    transition: opacity 200ms var(--ease-out), transform 240ms var(--ease-out);
+  }
+  /* Show sun in dark mode (to switch → light), moon in light mode */
+  .theme-toggle .i-moon { display: none; }
+  :root[data-theme="light"] .theme-toggle .i-sun { display: none; }
+  :root[data-theme="light"] .theme-toggle .i-moon { display: block; }
+
+  /* ============================================================
+     Hero
+     ============================================================ */
+  section { position: relative; z-index: 1; }
+
+  .hero {
+    padding: 168px 0 88px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--text-muted);
+    padding: 7px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--bg-elev);
+    margin-bottom: 28px;
+  }
+  .eyebrow .ping { position: relative; width: 7px; height: 7px; }
+  .eyebrow .ping span {
+    position: absolute; inset: 0; border-radius: 50%; background: var(--good);
+  }
+  .eyebrow .ping span:first-child { animation: ping 1.8s var(--ease-out) infinite; }
+  @keyframes ping {
+    0% { transform: scale(1); opacity: 0.7; }
+    80%,100% { transform: scale(2.4); opacity: 0; }
+  }
+  .hero h1 {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+  }
+  .hero h1 .accent {
+    background: linear-gradient(120deg, #60A5FA, #3B82F6 55%, #818CF8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero .lede {
+    font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+    color: var(--text-muted);
+    max-width: 60ch;
+    line-height: 1.65;
+    margin-bottom: 38px;
+  }
+  .hero .lede strong { color: var(--text); font-weight: 500; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 13px 22px;
+    border-radius: 11px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: transform 160ms var(--ease-out), background 180ms var(--ease-out), border-color 180ms var(--ease-out);
+  }
+  .btn svg { width: 17px; height: 17px; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #4f8ff7; }
+  .btn-primary:active { transform: scale(0.97); }
+  .btn-ghost { background: var(--bg-elev); border-color: var(--border); color: var(--text); }
+  .btn-ghost:hover { border-color: var(--border-strong); background: var(--bg-card); }
+  .btn-ghost:active { transform: scale(0.97); }
+
+  /* Stat strip */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-top: 64px;
+    width: 100%;
+  }
+  .stat { background: var(--bg-elev); padding: 24px 22px; }
+  .stat .num {
+    font-family: var(--font-head);
+    font-size: clamp(1.7rem, 3.6vw, 2.3rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+  .stat .num span { color: var(--accent); }
+  .stat .label { font-size: 13px; color: var(--text-faint); margin-top: 4px; }
+  @media (max-width: 720px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+  /* ============================================================
+     Section shell
+     ============================================================ */
+  .section { padding: 72px 0; }
+  .section-head { margin-bottom: 44px; max-width: 64ch; }
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .section-tag::before {
+    content: "";
+    width: 26px; height: 1px;
+    background: var(--accent);
+    opacity: 0.6;
+  }
+  .section h2 {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: clamp(1.7rem, 4vw, 2.6rem);
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+  }
+  .section .sub { color: var(--text-muted); margin-top: 14px; font-size: 1.05rem; }
+
+  /* ============================================================
+     About + capability cards
+     ============================================================ */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 860px) { .about-grid { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    transition: border-color 220ms var(--ease-out), transform 220ms var(--ease-out);
+  }
+  .card.big p { color: var(--text-muted); font-size: 1.02rem; line-height: 1.75; }
+  .card.big p + p { margin-top: 16px; }
+  .card.big strong { color: var(--text); font-weight: 500; }
+  .focus-list { list-style: none; display: flex; flex-direction: column; gap: 18px; }
+  .focus-list li { display: flex; gap: 14px; align-items: flex-start; }
+  .focus-ico {
+    flex-shrink: 0;
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    display: grid; place-items: center;
+    background: var(--accent-glow);
+    border: 1px solid rgba(59,130,246,0.25);
+    color: var(--accent);
+  }
+  .focus-ico svg { width: 19px; height: 19px; }
+  .focus-list h4 { font-size: 15px; font-weight: 600; color: var(--text); }
+  .focus-list p { font-size: 13.5px; color: var(--text-faint); margin-top: 2px; }
+
+  /* ============================================================
+     Experience timeline (companies anonymized)
+     ============================================================ */
+  .timeline { display: flex; flex-direction: column; gap: 14px; }
+  .xp {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px 28px;
+    transition: border-color 220ms var(--ease-out), transform 220ms var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .xp:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+  }
+  @media (max-width: 760px) { .xp { grid-template-columns: 1fr; gap: 14px; } }
+  .xp .meta .period {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--accent);
+  }
+  .xp .meta .org {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin-top: 8px;
+    color: var(--text);
+  }
+  .xp .meta .sector {
+    font-size: 12.5px;
+    color: var(--text-faint);
+    margin-top: 3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .xp .body h3 {
+    font-family: var(--font-head);
+    font-size: 1.18rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+  .xp .body p { color: var(--text-muted); font-size: 0.96rem; line-height: 1.65; }
+  .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--text-muted);
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-elev);
+  }
+
+  /* ============================================================
+     Projects
+     ============================================================ */
+  .proj-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 760px) { .proj-grid { grid-template-columns: 1fr; } }
+  .proj {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px;
+    overflow: hidden;
+    transition: border-color 220ms var(--ease-out), transform 220ms var(--ease-out);
+  }
+  .proj::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(420px circle at var(--mx,50%) var(--my,0%), var(--accent-glow), transparent 60%);
+    opacity: 0;
+    transition: opacity 300ms var(--ease-out);
+    pointer-events: none;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .proj:hover { border-color: var(--border-strong); transform: translateY(-3px); }
+    .proj:hover::after { opacity: 1; }
+  }
+  .proj .pico {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: grid; place-items: center;
+    background: var(--accent-glow);
+    border: 1px solid rgba(59,130,246,0.25);
+    color: var(--accent);
+    margin-bottom: 18px;
+  }
+  .proj .pico svg { width: 20px; height: 20px; }
+  .proj h3 {
+    font-family: var(--font-head);
+    font-size: 1.12rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-bottom: 9px;
+    position: relative; z-index: 1;
+  }
+  .proj p { color: var(--text-muted); font-size: 0.93rem; line-height: 1.6; position: relative; z-index: 1; }
+  .proj .scope {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--text-faint);
+    margin-top: 16px;
+    display: flex; align-items: center; gap: 7px;
+    position: relative; z-index: 1;
+  }
+
+  /* ============================================================
+     Skills
+     ============================================================ */
+  .skill-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 860px) { .skill-grid { grid-template-columns: 1fr; } }
+  .skill-col {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+  .skill-col .ch {
+    display: flex; align-items: center; gap: 11px;
+    font-family: var(--font-head);
+    font-weight: 600; font-size: 1.02rem;
+    margin-bottom: 18px;
+  }
+  .skill-col .ch .ico {
+    width: 32px; height: 32px; border-radius: 9px;
+    display: grid; place-items: center;
+    background: var(--accent-glow);
+    border: 1px solid rgba(59,130,246,0.25);
+    color: var(--accent);
+  }
+  .skill-col .ch .ico svg { width: 17px; height: 17px; }
+  .skill-col ul { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+  .skill-col li {
+    font-size: 14px; color: var(--text-muted);
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .skill-col li::before {
+    content: "";
+    flex-shrink: 0;
+    width: 6px; height: 6px; margin-top: 7px;
+    border-radius: 50%; background: var(--accent);
+  }
+
+  /* ============================================================
+     Certifications marquee
+     ============================================================ */
+  .cert-wrap { overflow: hidden; position: relative; }
+  .cert-wrap::before, .cert-wrap::after {
+    content: ""; position: absolute; top: 0; bottom: 0; width: 90px; z-index: 2; pointer-events: none;
+  }
+  .cert-wrap::before { left: 0; background: linear-gradient(to right, var(--bg), transparent); }
+  .cert-wrap::after { right: 0; background: linear-gradient(to left, var(--bg), transparent); }
+  .cert-track { display: flex; gap: 12px; width: max-content; animation: scroll-x 38s linear infinite; }
+  .cert-wrap:hover .cert-track { animation-play-state: paused; }
+  @keyframes scroll-x { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .cert {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 11px 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    white-space: nowrap;
+    display: flex; align-items: center; gap: 9px;
+  }
+  .cert svg { width: 15px; height: 15px; color: var(--good); flex-shrink: 0; }
+  @media (prefers-reduced-motion: reduce) {
+    .cert-track { animation: none; flex-wrap: wrap; width: 100%; }
+    .cert-wrap::before, .cert-wrap::after { display: none; }
+  }
+
+  /* ============================================================
+     Contact
+     ============================================================ */
+  .contact {
+    background: linear-gradient(180deg, var(--bg-card), var(--bg-elev));
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 56px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact::before {
+    content: "";
+    position: absolute; top: -50%; left: 50%; transform: translateX(-50%);
+    width: 560px; height: 360px;
+    background: radial-gradient(circle, var(--accent-glow), transparent 70%);
+    pointer-events: none;
+  }
+  .contact h2 {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: clamp(1.8rem, 4.4vw, 2.8rem);
+    letter-spacing: -0.025em;
+    position: relative;
+  }
+  .contact p { color: var(--text-muted); max-width: 48ch; margin: 16px auto 32px; position: relative; }
+  .contact .cta-row { justify-content: center; position: relative; }
+
+  /* ============================================================
+     Footer
+     ============================================================ */
+  footer {
+    border-top: 1px solid var(--border);
+    margin-top: 72px;
+    padding: 32px 0 48px;
+    position: relative; z-index: 1;
+  }
+  .foot-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+    color: var(--text-faint); font-size: 13.5px;
+  }
+  .foot-inner .socials { display: flex; gap: 8px; }
+  .foot-inner .socials a {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-muted);
+    transition: color 160ms var(--ease-out), border-color 160ms var(--ease-out), transform 160ms var(--ease-out);
+  }
+  .foot-inner .socials a:hover { color: var(--text); border-color: var(--border-strong); }
+  .foot-inner .socials a:active { transform: scale(0.94); }
+  .foot-inner .socials svg { width: 18px; height: 18px; }
+
+  /* ============================================================
+     Scroll reveal
+     ============================================================ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+    will-change: opacity, transform;
+  }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .eyebrow .ping span:first-child { animation: none; }
+  }
+</style>
+<script>
+  // Set theme before first paint (no flash): saved choice → system preference → dark.
+  (function () {
+    try {
+      var saved = localStorage.getItem('theme');
+      var theme = saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <nav class="nav-inner" aria-label="Primary">
+    <a class="brand" href="#top"><span class="dot" aria-hidden="true"></span>Prince&nbsp;Nshuti</a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a class="nav-cta" href="#contact">Get in touch</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle light and dark theme" aria-pressed="false" title="Toggle theme" style="margin-left:6px;">
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero wrap">
+  <span class="eyebrow reveal">
+    <span class="ping" aria-hidden="true"><span></span></span>
+    Based in Kigali, Rwanda · Available for engagements
+  </span>
+  <h1 class="reveal">I design, secure &amp; scale<br /><span class="accent">enterprise networks.</span></h1>
+  <p class="lede reveal">
+    I'm Prince Nshuti — a <strong>Network &amp; Cybersecurity infrastructure engineer</strong> and
+    <strong>Technical Account Manager</strong> with 7+ years protecting and modernising the systems
+    that businesses, banks and institutions depend on across Rwanda and the wider META region.
+  </p>
+  <div class="cta-row reveal">
+    <a class="btn btn-primary" href="#contact">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z" opacity="0"/><path d="M22 6 12 13 2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+      Start a conversation
+    </a>
+    <a class="btn btn-ghost" href="#experience">
+      View experience
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <div class="stats reveal">
+    <div class="stat"><div class="num">7<span>+</span></div><div class="label">Years in the field</div></div>
+    <div class="stat"><div class="num">100<span>+</span></div><div class="label">Sites deployed &amp; secured</div></div>
+    <div class="stat"><div class="num">20<span>+</span></div><div class="label">Certifications held</div></div>
+    <div class="stat"><div class="num">META</div><div class="label">&amp; Rwanda coverage</div></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section wrap" id="about">
+  <div class="section-head reveal">
+    <div class="section-tag">About</div>
+    <h2>Engineering trust into every layer of the network.</h2>
+    <p class="sub">From the cable in the rack to the firewall policy and the boardroom report — I make infrastructure reliable, secure and understood.</p>
+  </div>
+
+  <div class="about-grid">
+    <div class="card big reveal">
+      <p>
+        My work sits at the intersection of <strong>network engineering, cybersecurity and customer trust</strong>.
+        I design, deploy and integrate enterprise systems — networks, firewalls, servers, storage,
+        virtualization and cloud — then harden them against real-world threats and keep them running
+        through monitoring, backup and disaster recovery.
+      </p>
+      <p>
+        Today I work as a <strong>Technical Account Manager</strong> for a global cybersecurity vendor,
+        owning the technical relationship and escalation management for enterprise customers across the
+        META and Rwanda region. The thread through my career is the same: translate complex security
+        technology into <strong>outcomes people can rely on</strong> — and explain it clearly to the
+        teams who depend on it.
+      </p>
+      <p>
+        I hold a <strong>BSc in Computer Science</strong> and a deep certification portfolio spanning
+        Cisco, Fortinet, Sophos, Palo Alto, Juniper, VMware and Kaspersky — backed by hands-on delivery
+        for financial institutions, government bodies, ISPs and international schools.
+      </p>
+    </div>
+
+    <div class="card reveal">
+      <ul class="focus-list">
+        <li>
+          <span class="focus-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+          <div><h4>Security hardening</h4><p>Firewalls, EDR, SIEM, pen-testing &amp; incident response.</p></div>
+        </li>
+        <li>
+          <span class="focus-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/></svg></span>
+          <div><h4>Network architecture</h4><p>Routing, switching, SD-WAN &amp; multi-vendor integration.</p></div>
+        </li>
+        <li>
+          <span class="focus-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+          <div><h4>Infrastructure &amp; cloud</h4><p>Virtualization, storage, backup, DR &amp; cloud platforms.</p></div>
+        </li>
+        <li>
+          <span class="focus-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+          <div><h4>Account &amp; escalation management</h4><p>Enterprise relationships, SLAs &amp; clear technical comms.</p></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="section wrap" id="experience">
+  <div class="section-head reveal">
+    <div class="section-tag">Experience</div>
+    <h2>Where I've delivered.</h2>
+    <p class="sub">A track record across cybersecurity, investment, telecom and the non-profit sector. Employer names are withheld for confidentiality — sectors are shown.</p>
+  </div>
+
+  <div class="timeline">
+
+    <article class="xp reveal">
+      <div class="meta">
+        <div class="period">2024 — Present</div>
+        <div class="org">Company 1</div>
+        <div class="sector">Enterprise IT Systems Integrator</div>
+      </div>
+      <div class="body">
+        <h3>IT Infrastructure Consultant</h3>
+        <p>Technical lead for designing, deploying and integrating enterprise IT systems — networks, firewalls, servers, storage, virtualization and cloud. Drive cybersecurity hardening, infrastructure monitoring, backup &amp; disaster recovery and multi-vendor integration, delivering secure, scalable environments that keep clients running.</p>
+        <div class="tags">
+          <span class="tag">Systems Integration</span>
+          <span class="tag">Cyber Hardening</span>
+          <span class="tag">Backup &amp; DR</span>
+          <span class="tag">Cloud</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="xp reveal">
+      <div class="meta">
+        <div class="period">2024 — Present</div>
+        <div class="org">Company 2</div>
+        <div class="sector">Global Cybersecurity Vendor</div>
+      </div>
+      <div class="body">
+        <h3>Technical Account Manager (TAM)</h3>
+        <p>Own the technical relationship and escalation management for enterprise customers across the META and Rwanda region. Ensure service-agreement obligations are met, safeguard service quality, and maintain best-in-class communication between customers and technical support to prevent and resolve issues fast.</p>
+        <div class="tags">
+          <span class="tag">EDR / XDR</span>
+          <span class="tag">Escalation Mgmt</span>
+          <span class="tag">SLA Assurance</span>
+          <span class="tag">Enterprise Support</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="xp reveal">
+      <div class="meta">
+        <div class="period">2020 — 2024</div>
+        <div class="org">Company 3</div>
+        <div class="sector">Investment Holding Group (13+ subsidiaries)</div>
+      </div>
+      <div class="body">
+        <h3>Senior Network &amp; Security Infrastructure</h3>
+        <p>Kept the group's network and security infrastructure current and resilient across 13+ subsidiary companies. Authored and enforced security policies, ran vulnerability testing and pen-tests, and implemented firewalls, IPS/IDS, SIEM and encryption — alongside compliance reporting, change management and security-awareness programs. Progressed from Network Infrastructure Officer.</p>
+        <div class="tags">
+          <span class="tag">IPS / IDS / SIEM</span>
+          <span class="tag">Security Policy</span>
+          <span class="tag">Pen-testing</span>
+          <span class="tag">Compliance</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="xp reveal">
+      <div class="meta">
+        <div class="period">2018 — 2020</div>
+        <div class="org">Company 4</div>
+        <div class="sector">Internet Service Provider (ISP)</div>
+      </div>
+      <div class="body">
+        <h3>Business Support Engineer</h3>
+        <p>Studied, deployed and troubleshot network and security services on both the customer edge and the ISP side — fiber and wireless broadband, VoIP, video conferencing, 4G LTE, VPN and LAN. Equipped 100+ government and private institutions and delivered managed security services (MSSP).</p>
+        <div class="tags">
+          <span class="tag">Broadband &amp; 4G LTE</span>
+          <span class="tag">VoIP</span>
+          <span class="tag">VPN</span>
+          <span class="tag">MSSP</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="xp reveal">
+      <div class="meta">
+        <div class="period">2017 — 2020</div>
+        <div class="org">Company 5</div>
+        <div class="sector">Non-Governmental Organizations (NGO)</div>
+      </div>
+      <div class="body">
+        <h3>Network &amp; Security Consultant</h3>
+        <p>Served multiple NGOs as network and security consultant and helpdesk lead — installing and managing network and security infrastructure, ensuring cybersecurity controls were in place for organisations heavily reliant on online services, and supporting all IT hardware and software end-to-end.</p>
+        <div class="tags">
+          <span class="tag">Network Mgmt</span>
+          <span class="tag">Cyber Controls</span>
+          <span class="tag">IT Support</span>
+          <span class="tag">Helpdesk</span>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="section wrap" id="projects">
+  <div class="section-head reveal">
+    <div class="section-tag">Selected Projects</div>
+    <h2>Work that moved the needle.</h2>
+    <p class="sub">High-impact deployments across finance, education and enterprise — clients anonymised, outcomes real.</p>
+  </div>
+
+  <div class="proj-grid">
+
+    <article class="proj reveal">
+      <span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>
+      <h3>EDR Optimum Rollout — Financial Institution</h3>
+      <p>Led implementation of an Endpoint Detection &amp; Response platform for a financial institution, fortifying defences with proactive threat detection and response and strengthening compliance over critical financial data.</p>
+      <div class="scope"><span>Sector: Banking &amp; Finance</span></div>
+    </article>
+
+    <article class="proj reveal">
+      <span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+      <h3>Full-Disk Encryption Programme</h3>
+      <p>Led and deployed an organisation-wide disk-encryption project, securing data at rest across the endpoint fleet and closing a key exposure for sensitive information.</p>
+      <div class="scope"><span>Sector: Enterprise</span></div>
+    </article>
+
+    <article class="proj reveal">
+      <span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+      <h3>EDR Optimum + Sandbox Deployment</h3>
+      <p>Spearheaded a combined Endpoint Detection &amp; Response and Sandbox rollout, adding advanced threat detection and analysis that sharply raised the client's ability to identify and contain security threats.</p>
+      <div class="scope"><span>Sector: Enterprise Security</span></div>
+    </article>
+
+    <article class="proj reveal">
+      <span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span>
+      <h3>Infrastructure Upgrade &amp; SD-WAN — International School</h3>
+      <p>Oversaw an end-to-end IT infrastructure upgrade and SD-WAN implementation, modernising the network to improve connectivity and performance and streamline administrative operations.</p>
+      <div class="scope"><span>Sector: Education</span></div>
+    </article>
+
+    <article class="proj reveal" style="grid-column: 1 / -1;">
+      <span class="pico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="4" cy="6" r="2"/><circle cx="20" cy="6" r="2"/><circle cx="4" cy="18" r="2"/><circle cx="20" cy="18" r="2"/><path d="M6 6h2M16 6h2M6 18h2M16 18h2M12 9V6M12 18v-3"/></svg></span>
+      <h3>Next-Gen SD-WAN Across 11 Subsidiaries</h3>
+      <p>Designed and rolled out a Cisco Meraki software-defined WAN spanning 11 subsidiary companies for a high-profile client — introducing security and performance enhancements, high availability and disaster recovery, quality of service, automation and real-time event monitoring across the group.</p>
+      <div class="scope"><span>Sector: Multi-Entity Enterprise · 11 subsidiaries</span></div>
+    </article>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="section wrap" id="skills">
+  <div class="section-head reveal">
+    <div class="section-tag">Capabilities</div>
+    <h2>The toolkit.</h2>
+    <p class="sub">Multi-vendor depth across the network, the perimeter and the platform.</p>
+  </div>
+
+  <div class="skill-grid">
+    <div class="skill-col reveal">
+      <div class="ch"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M4 12h4M16 12h4M12 4v4M12 16v4"/></svg></span>Network &amp; Routing</div>
+      <ul>
+        <li>Cisco Routing &amp; Switching</li>
+        <li>Juniper Routing &amp; Switching</li>
+        <li>SD-WAN — Meraki, Fortinet, Sophos, Palo Alto</li>
+        <li>Wireless &amp; LAN deployment / cabling</li>
+        <li>VoIP &amp; video-conferencing systems</li>
+      </ul>
+    </div>
+
+    <div class="skill-col reveal">
+      <div class="ch"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>Security &amp; Defence</div>
+      <ul>
+        <li>Firewalling — Cisco, Sophos, FortiGate, Check Point, Palo Alto</li>
+        <li>Kaspersky EDR, Sandbox, KATA &amp; Secure Mail Gateway</li>
+        <li>Vulnerability assessment &amp; penetration testing</li>
+        <li>Incident investigation &amp; response</li>
+        <li>Security policy, IPS/IDS &amp; SIEM</li>
+      </ul>
+    </div>
+
+    <div class="skill-col reveal">
+      <div class="ch"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01M6 18h.01"/></svg></span>Infrastructure &amp; Cloud</div>
+      <ul>
+        <li>Virtualization with VMware ESXi</li>
+        <li>Linux system administration</li>
+        <li>Backup, disaster recovery &amp; business continuity</li>
+        <li>AWS cloud fundamentals</li>
+        <li>Windows OS deployment &amp; troubleshooting</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Certifications marquee -->
+  <div class="cert-wrap reveal" style="margin-top:24px;" aria-label="Certifications">
+    <div class="cert-track" id="certTrack"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section wrap" id="contact">
+  <div class="contact reveal">
+    <h2>Let's secure what matters.</h2>
+    <p>Whether you're hardening infrastructure, planning an SD-WAN migration, or need a steady hand on enterprise security — I'd be glad to talk.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="mailto:pnshuti@princenshuti.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+        pnshuti@princenshuti.com
+      </a>
+      <a class="btn btn-ghost" href="tel:+250788380820">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        +250 788 380 820
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div>© <span id="year"></span> Prince Nshuti · Kigali, Rwanda · <span style="font-family:var(--font-mono)">princenshuti.com</span></div>
+    <div class="socials">
+      <a href="mailto:pnshuti@princenshuti.com" aria-label="Email Prince Nshuti">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+      </a>
+      <a href="tel:+250788380820" aria-label="Call Prince Nshuti">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Theme toggle — persist choice to localStorage
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('themeToggle');
+    function sync() {
+      var isLight = root.getAttribute('data-theme') === 'light';
+      btn.setAttribute('aria-pressed', String(isLight));
+      btn.setAttribute('title', isLight ? 'Switch to dark theme' : 'Switch to light theme');
+    }
+    sync();
+    btn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      sync();
+    });
+  })();
+
+  // Certifications — duplicated once for a seamless marquee loop
+  const certs = [
+    "CCNP Security", "CCNA", "Certified Ethical Hacker (CEH)",
+    "VMware Certified Professional", "Veeam Certified Engineer",
+    "Fortinet NSE 4", "Fortinet NSE 1–3", "Sophos Certified Architect",
+    "Juniper JNCIA", "AWS Cloud Practitioner", "Six Sigma Yellow Belt",
+    "Kaspersky KATA / KEDR", "Kaspersky Endpoint Security",
+    "Kaspersky Secure Mail Gateway", "Cisco Meraki", "3CX Advanced Engineer"
+  ];
+  const track = document.getElementById('certTrack');
+  const check = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const list = reduce ? certs : certs.concat(certs);
+  track.innerHTML = list.map(c => `<span class="cert">${check}${c}</span>`).join('');
+
+  // Scroll reveal — gentle, respects reduced motion
+  const items = document.querySelectorAll('.reveal');
+  if (reduce || !('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+  } else {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          // small stagger for grouped siblings
+          e.target.style.transitionDelay = (i % 4) * 60 + 'ms';
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    items.forEach(el => io.observe(el));
+  }
+
+  // Project cards — pointer-follow glow (decorative, fine pointers only)
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.querySelectorAll('.proj').forEach(card => {
+      card.addEventListener('pointermove', (ev) => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', (ev.clientX - r.left) + 'px');
+        card.style.setProperty('--my', (ev.clientY - r.top) + 'px');
+      });
+    });
+  }
+</script>
+</body>
+</html>
